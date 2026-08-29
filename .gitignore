@@ -1,0 +1,13 @@
+# Buildozer and Kivy
+.buildozer/
+bin/
+*.apk
+*.aab
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# App Data
+shockdetector_storage.json
