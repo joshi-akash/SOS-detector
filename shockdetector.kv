@@ -1,50 +1,162 @@
-<MainScreen>:
+#:kivy 2.3.1
+
+<SettingsDrawer>:
+    size_hint: 0.75, 1  # 75% screen width, 100% height (Drawer style)
+    pos_hint: {'x': 0}  # Anchored to the left side
+    background_color: 0, 0, 0, 0.6  # Darkens the rest of the screen behind the drawer
+    background: '' 
+
     BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.15, 0.15, 1 # Drawer background color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
         orientation: 'vertical'
-        padding: 40
-        spacing: 20
+        padding: dp(20)
+        spacing: dp(15)
 
         Label:
-            text: "Emergency Shock Detector"
-            font_size: '28sp'
+            text: 'SETTINGS'
             bold: True
-            halign: 'center'
-            size_hint_y: None
-            height: self.texture_size[1] + dp(20)
-
-        Label:
-            id: status_label
-            text: "Status: Initializing..."
-            font_size: '18sp'
-            halign: 'center'
-            color: (0.7, 0.7, 0.7, 1)
-            size_hint_y: None
-            height: self.texture_size[1]
-            padding: (0, 20)
-
-        BoxLayout:
-            size_hint_y: None
-            height: '50dp'
-            spacing: 10
-
-            Label:
-                text: "Contact:"
-                font_size: '16sp'
-                size_hint_x: 0.3
-                halign: 'right'
-                valign: 'middle'
-
-            TextInput:
-                id: phone_input
-                hint_text: 'Enter phone number'
-                font_size: '18sp'
-                size_hint_x: 0.7
-                multiline: False
-                input_type: 'tel'
-
-        Button:
-            text: "Save Contact"
             font_size: '20sp'
             size_hint_y: None
-            height: '50dp'
-            on_press: app.save_contact()
+            height: dp(40)
+
+        Label:
+            text: 'Add Contact:'
+            size_hint_y: None
+            height: dp(30)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            TextInput:
+                id: phone_input
+                hint_text: 'Number'
+                input_type: 'tel'
+                multiline: False
+                background_normal: ''
+                background_color: 0.9, 0.9, 0.9, 1
+            Button:
+                text: 'ADD'
+                size_hint_x: 0.4
+                background_normal: ''
+                background_color: 0.1, 0.3, 0.1, 1 
+                on_release: root.save_contact()
+
+        Label:
+            text: 'Saved Numbers:'
+            size_hint_y: None
+            height: dp(30)
+
+        Label:
+            id: saved_contacts_label
+            text: ''
+            color: 0.7, 0.7, 0.7, 1
+            size_hint_y: None
+            height: dp(30)
+
+        Label:
+            text: 'Sensitivity (Impact Force):'
+            size_hint_y: None
+            height: dp(30)
+
+        Slider:
+            id: sensitivity_slider
+            min: 10.0
+            max: 50.0
+            value: 30.0 
+            size_hint_y: None
+            height: dp(40)
+            on_value: root.update_sensitivity(self.value)
+
+        Widget:
+            # Spacer to push layout up
+            size_hint_y: 1
+
+        Button:
+            text: 'CLOSE MENU'
+            size_hint_y: None
+            height: dp(50)
+            background_normal: ''
+            background_color: 0.1, 0.1, 0.1, 1
+            on_release: root.dismiss()
+
+<MainScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    orientation: 'vertical'
+
+    # Top Navigation Bar
+    RelativeLayout:
+        size_hint_y: None
+        height: dp(60)
+        Button:
+            text: 'MENU'
+            bold: True
+            size_hint: None, 1
+            width: dp(80)
+            pos_hint: {'x': 0, 'center_y': 0.5}
+            background_normal: ''
+            background_color: 0, 0, 0, 0 
+            on_release: root.open_settings()
+        Label:
+            text: 'SHOCK DETECTOR'
+            bold: True
+            font_size: '18sp'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+    # Center Typography Area
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 1
+        padding: dp(20)
+        spacing: dp(10)
+        
+        Widget:
+            size_hint_y: 0.3 
+        
+        Label:
+            id: status_label
+            text: root.status_text
+            color: root.status_color
+            font_size: '20sp'
+            size_hint_y: None
+            height: dp(40)
+        
+        Label:
+            id: gps_label
+            text: root.gps_text
+            color: 0.5, 0.5, 0.5, 1 
+            font_size: '14sp'
+            size_hint_y: None
+            height: dp(30)
+            
+        Widget:
+            size_hint_y: 0.5
+
+    # Bottom Block Action Button
+    AnchorLayout:
+        size_hint_y: None
+        height: dp(200) 
+        padding: dp(20)
+        anchor_x: 'center'
+        anchor_y: 'center'
+        Button:
+            id: action_button
+            text: root.button_text
+            bold: True
+            font_size: '18sp'
+            background_normal: ''
+            background_color: root.button_color
+            on_release: root.toggle_state()
