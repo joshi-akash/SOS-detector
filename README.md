@@ -179,7 +179,7 @@ This layered approach keeps the majority of the codebase portable and readable t
 The fastest way to get the app running on a real device — no Python, Kivy, or build toolchain required.
 
 1. Navigate to the [`/app`](app/) directory in this repository.
-2. Download **`shockdetector-1.0-arm64-v8a-debug.apk`**.
+2. Download **`base.apk`**.
 3. Transfer the file to an Android device (**Android 5.0 / API 21 or higher**).
 4. Enable **Install from Unknown Sources** in your Android device settings.
 5. Install the APK and launch **Shock Detector**.
@@ -220,7 +220,7 @@ The compiled APK will be output to the `bin/` directory after a successful Build
 
 ```text
 ├── app/
-│   └── shockdetector-1.0-arm64-v8a-debug.apk
+│   └── base.apk
 ├── screenshots/
 │   ├── normal_dashboard.png
 │   ├── shock_detected.png
